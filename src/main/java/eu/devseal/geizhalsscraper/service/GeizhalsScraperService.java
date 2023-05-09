@@ -18,7 +18,7 @@ import static java.util.Comparator.comparing;
 public class GeizhalsScraperService {
 
     public Map<Product, List<GeizhalsProduct>> scrape() throws IOException {
-        Map<Product, List<GeizhalsProduct>> scrapedProducts = new HashMap<>();
+        Map<Product, List<GeizhalsProduct>> scrapedProducts = new LinkedHashMap<>();
         for (Product url : Product.values()) {
             Document doc = getDocument(url);
             List<GeizhalsProduct> productList = getProducts(doc);
