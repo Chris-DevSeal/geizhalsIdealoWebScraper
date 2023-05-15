@@ -59,7 +59,7 @@ public class GeizhalsScraperService {
         }
     }
 
-    private static List<Double> getShippingCost(Element product) {
+    private List<Double> getShippingCost(Element product) {
         return Arrays.stream(product.select("div.offer__delivery div.offer__delivery-payment span.gh_extracost").text().replace("€ ", "").replace(",", ".").replace("-", "").split(" ")).distinct().map(price -> price.trim().length() > 0 ? Double.parseDouble(price) : (double) 0).toList();
     }
 
