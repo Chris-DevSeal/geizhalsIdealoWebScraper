@@ -89,4 +89,15 @@ public class GeizhalsScraperService {
                 .limit(2)
                 .collect(Collectors.toList());
     }
+    public List<GeizhalsProduct> findBestPerformingCompanies(List<GeizhalsProduct> products, int limit) {
+        return List.copyOf(products).stream()
+                .sorted(comparing(productService::getTotalPrice))
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+    public Optional<GeizhalsProduct> findProductListingByCompanyName(List<GeizhalsProduct> products, String companyName) {
+        return products.stream()
+                .filter(product -> product.getCompany().equals(companyName))
+                .findFirst();
+    }
 }
