@@ -8,16 +8,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import static eu.devseal.geizhalsscraper.data.Product.*;
 
 @Configuration
 public class ScraperRunner {
     @Bean
-    ApplicationRunner runScraper(GeizhalsScraperService scraperService, DisplayScrapedDataService display) throws IOException {
+    ApplicationRunner runScraper(GeizhalsScraperService scraperService, DisplayScrapedDataService display) {
         return args -> {
             Map<Product, List<GeizhalsProduct>> products = scraperService.scrape();
             display.printToConsole(products);
