@@ -2,6 +2,7 @@ package eu.devseal.geizhalsscraper.service;
 
 import eu.devseal.geizhalsscraper.data.GeizhalsProduct;
 import eu.devseal.geizhalsscraper.data.Product;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +16,9 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 
 @Service
+@RequiredArgsConstructor
 public class GeizhalsScraperService {
+    private final GeizhalsProductService productService;
 
     public Map<Product, List<GeizhalsProduct>> scrape() throws IOException {
         Map<Product, List<GeizhalsProduct>> scrapedProducts = new LinkedHashMap<>();
@@ -82,7 +85,7 @@ public class GeizhalsScraperService {
 
     public List<GeizhalsProduct> findBestPerformingCompanies(List<GeizhalsProduct> products) {
         return List.copyOf(products).stream()
-                .sorted(comparing(GeizhalsProduct::getTotalPrice))
+                .sorted(comparing(productService::getTotalPrice))
                 .limit(2)
                 .collect(Collectors.toList());
     }

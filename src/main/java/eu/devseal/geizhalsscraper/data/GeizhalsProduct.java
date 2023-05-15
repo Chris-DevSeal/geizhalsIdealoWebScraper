@@ -12,11 +12,4 @@ public class GeizhalsProduct {
     private double unitPrice;
     private List<Double> shippingCost;
     private String company;
-
-    public double getTotalPrice() {
-        double smallestShippingCost = shippingCost.stream()
-                .min(Double::compareTo)
-                .orElse(shippingCost.get(0));
-        return unitPrice + smallestShippingCost;
-    }
 }

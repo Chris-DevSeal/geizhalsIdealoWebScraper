@@ -5,22 +5,21 @@ import eu.devseal.geizhalsscraper.data.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DisplayScrapedDataService {
     private final GeizhalsScraperService scraperService;
+    private final GeizhalsProductService productService;
 
     public void printToConsole(Map<Product, List<GeizhalsProduct>> data) {
         for (Map.Entry<Product, List<GeizhalsProduct>> entry : data.entrySet()) {
             List<GeizhalsProduct> bestPerformingCompanies = scraperService.findBestPerformingCompanies(entry.getValue());
             System.out.printf("%s:%n", formatProduct(entry.getKey()));
-            System.out.printf("     Best Performing company: %s - Total Price: %,.2f %n", bestPerformingCompanies.get(0).getCompany(), bestPerformingCompanies.get(0).getTotalPrice());
-            System.out.printf("     Second best Performing company: %s - Total Price: %,.2f %n", bestPerformingCompanies.get(1).getCompany(), bestPerformingCompanies.get(1).getTotalPrice());
+            System.out.printf("     Best Performing company: %s - Total Price: %,.2f %n", bestPerformingCompanies.get(0).getCompany(), productService.getTotalPrice(bestPerformingCompanies.get(0)));
+            System.out.printf("     Second best Performing company: %s - Total Price: %,.2f %n", bestPerformingCompanies.get(1).getCompany(), productService.getTotalPrice(bestPerformingCompanies.get(1)));
         }
     }
 
