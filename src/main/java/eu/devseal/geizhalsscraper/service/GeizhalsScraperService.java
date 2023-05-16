@@ -71,7 +71,7 @@ public class GeizhalsScraperService {
     }
 
     private int getId(String productID) {
-        return Integer.parseInt(productID.substring(productID.lastIndexOf("_") + 1));
+        return Integer.parseInt(productID.substring(productID.lastIndexOf("_") + 1))+1;
     }
 
     private double getUnitPrice(Element product) {
