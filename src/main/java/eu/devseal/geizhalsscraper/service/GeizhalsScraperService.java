@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static eu.devseal.geizhalsscraper.data.Configuration.NO_LISTING_ID;
 import static java.util.Comparator.comparing;
 
 @Service
@@ -71,7 +72,7 @@ public class GeizhalsScraperService {
     }
 
     private int getId(String productID) {
-        return Integer.parseInt(productID.substring(productID.lastIndexOf("_") + 1))+1;
+        return Integer.parseInt(productID.substring(productID.lastIndexOf("_") + 1)) + 1;
     }
 
     private double getUnitPrice(Element product) {
@@ -89,21 +90,30 @@ public class GeizhalsScraperService {
                 .limit(2)
                 .collect(Collectors.toList());
     }
+
     public List<GeizhalsProduct> findBestPerformingCompanies(List<GeizhalsProduct> products, int limit) {
         return List.copyOf(products).stream()
                 .sorted(comparing(productService::getTotalPrice))
                 .limit(limit)
                 .collect(Collectors.toList());
     }
-    public Optional<GeizhalsProduct> findProductListingByCompanyName(List<GeizhalsProduct> products, String companyName) {
+
+    public GeizhalsProduct findProductListingByCompanyName(List<GeizhalsProduct> products, String companyName) {
         return products.stream()
                 .filter(product -> product.getCompany().equals(companyName))
-                .findFirst();
+                .findFirst()
+                .orElse(listingNotFound());
     }
-    public Optional<GeizhalsProduct> findFirstProductWhereCompanyIsNot(List<GeizhalsProduct> products, String companyName) {
+
+    private GeizhalsProduct listingNotFound() {
+        return GeizhalsProduct.builder().offerID(NO_LISTING_ID).build();
+    }
+
+    public GeizhalsProduct findFirstProductWhereCompanyIsNot(List<GeizhalsProduct> products, String companyName) {
         return products
                 .stream()
                 .filter(product -> !product.getCompany().equals(companyName))
-                .findFirst();
+                .findFirst()
+                .orElse(listingNotFound());
     }
 }
