@@ -29,9 +29,7 @@ public class ScraperRunner {
     @Bean
     @Order(1)
     ApplicationRunner writeToCSV(CSVWriterService writerService, FileWriter fileWriter) {
-        return args -> {
-            writerService.writeScrapedDataToCsv(fileWriter);
-        };
+        return args -> writerService.writeScrapedDataToCsv(fileWriter);
     }
     @Bean
     FileWriter getFileWriter() throws IOException {
