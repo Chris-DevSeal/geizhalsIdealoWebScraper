@@ -17,7 +17,7 @@ public class ScraperRunner {
     ApplicationRunner runScraper(GeizhalsScraperService scraperService, DisplayScrapedDataService display) {
         return args -> {
             Map<Product, List<GeizhalsProduct>> products = scraperService.scrape();
-            display.printToConsole(products);
+            display.displayData(products);
         };
     }
 
