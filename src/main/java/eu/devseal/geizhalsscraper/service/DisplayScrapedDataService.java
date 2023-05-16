@@ -8,32 +8,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static eu.devseal.geizhalsscraper.data.Configuration.NO_LISTING_ID;
+
 @Service
 @RequiredArgsConstructor
 public class DisplayScrapedDataService {
     private final GeizhalsScraperService scraperService;
     private final GeizhalsProductService productService;
-    private final int notFoundNumber = 999;
+    private final ProductFormatter productFormatter;
 
     public void displayData(Map<Product, List<GeizhalsProduct>> data) {
         final String companyName = "Comat";
         for (Map.Entry<Product, List<GeizhalsProduct>> productEntry : data.entrySet()) {
-            GeizhalsProduct comatListing = scraperService.findProductListingByCompanyName(productEntry.getValue(), companyName)
-                    .orElse(productNotListed());
-            GeizhalsProduct afterComatListing = scraperService.findFirstProductWhereCompanyIsNot(productEntry.getValue(), companyName)
-                    .orElse(productNotListed());
+            GeizhalsProduct comatListing = scraperService.findProductListingByCompanyName(productEntry.getValue(), companyName);
+            GeizhalsProduct afterComatListing = scraperService.findFirstProductWhereCompanyIsNot(productEntry.getValue(), companyName);
             printToConsole(productEntry, comatListing, afterComatListing);
         }
     }
 
     private void printToConsole(Map.Entry<Product, List<GeizhalsProduct>> entry, GeizhalsProduct comatListing, GeizhalsProduct afterComatListing) {
-        System.out.printf("%s:%n", formatProduct(entry.getKey()));
+        System.out.printf("%s:%n", productFormatter.format(entry.getKey()));
         displayComatListing(comatListing);
         displayCompetitorListing(afterComatListing);
     }
 
     private void displayCompetitorListing(GeizhalsProduct afterComatListing) {
-        if (afterComatListing.getOfferID() == notFoundNumber) {
+        if (afterComatListing.getOfferID() == NO_LISTING_ID) {
             System.out.println("     Best not Comat Listing: No other listing");
         } else {
             System.out.printf("     Best not Comat Listing: %s - Total Price: %,.2f %n", afterComatListing, productService.getTotalPrice(afterComatListing));
@@ -41,24 +41,12 @@ public class DisplayScrapedDataService {
     }
 
     private void displayComatListing(GeizhalsProduct comatListing) {
-        if (comatListing.getOfferID() == notFoundNumber) {
+        if (comatListing.getOfferID() == NO_LISTING_ID) {
             System.out.println("     Comat Listing: No Comat listing");
         } else {
             System.out.printf("     Comat Listing: %s - Total Price: %,.2f %n", comatListing, productService.getTotalPrice(comatListing));
         }
     }
 
-    private GeizhalsProduct productNotListed() {
-        return GeizhalsProduct.builder()
-                .offerID(notFoundNumber)
-                .build();
-    }
 
-    private String formatProduct(Product product) {
-        String[] prodArr = product.name().toLowerCase().split("_");
-        for (int i = 0; i < prodArr.length; i++) {
-            prodArr[i] = prodArr[i].substring(0, 1).toUpperCase() + prodArr[i].substring(1);
-        }
-        return String.format("Saeco %s", String.join(" ", prodArr));
-    }
 }
