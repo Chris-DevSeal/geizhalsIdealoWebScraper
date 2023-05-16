@@ -100,4 +100,10 @@ public class GeizhalsScraperService {
                 .filter(product -> product.getCompany().equals(companyName))
                 .findFirst();
     }
+    public Optional<GeizhalsProduct> findFirstProductWhereCompanyIsNot(List<GeizhalsProduct> products, String companyName) {
+        return products
+                .stream()
+                .filter(product -> !product.getCompany().equals(companyName))
+                .findFirst();
+    }
 }
