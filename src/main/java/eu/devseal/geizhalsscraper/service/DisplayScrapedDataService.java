@@ -13,6 +13,7 @@ import java.util.Map;
 public class DisplayScrapedDataService {
     private final GeizhalsScraperService scraperService;
     private final GeizhalsProductService productService;
+    private final int notFoundNumber = 999;
 
     public void displayData(Map<Product, List<GeizhalsProduct>> data) {
         final String companyName = "Comat";
@@ -32,7 +33,7 @@ public class DisplayScrapedDataService {
     }
 
     private void displayCompetitorListing(GeizhalsProduct afterComatListing) {
-        if (afterComatListing.getOfferID() == 999) {
+        if (afterComatListing.getOfferID() == notFoundNumber) {
             System.out.println("     Best not Comat Listing: No other listing");
         } else {
             System.out.printf("     Best not Comat Listing: %s - Total Price: %,.2f %n", afterComatListing, productService.getTotalPrice(afterComatListing));
@@ -40,7 +41,7 @@ public class DisplayScrapedDataService {
     }
 
     private void displayComatListing(GeizhalsProduct comatListing) {
-        if (comatListing.getOfferID() == 999) {
+        if (comatListing.getOfferID() == notFoundNumber) {
             System.out.println("     Comat Listing: No Comat listing");
         } else {
             System.out.printf("     Comat Listing: %s - Total Price: %,.2f %n", comatListing, productService.getTotalPrice(comatListing));
@@ -49,7 +50,7 @@ public class DisplayScrapedDataService {
 
     private GeizhalsProduct productNotListed() {
         return GeizhalsProduct.builder()
-                .offerID(999)
+                .offerID(notFoundNumber)
                 .build();
     }
 
