@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static eu.devseal.geizhalsscraper.data.Configuration.NO_LISTING_ID;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
 import static java.util.Comparator.comparing;
 
 @Service
