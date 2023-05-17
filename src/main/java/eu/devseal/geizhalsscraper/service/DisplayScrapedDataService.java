@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import static eu.devseal.geizhalsscraper.data.Configuration.NO_LISTING_ID;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.*;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +19,9 @@ public class DisplayScrapedDataService {
     private final ProductFormatter productFormatter;
 
     public void displayData(Map<Product, List<GeizhalsProduct>> data) {
-        final String companyName = "Comat";
         for (Map.Entry<Product, List<GeizhalsProduct>> productEntry : data.entrySet()) {
-            GeizhalsProduct comatListing = scraperService.findProductListingByCompanyName(productEntry.getValue(), companyName);
-            GeizhalsProduct afterComatListing = scraperService.findFirstProductWhereCompanyIsNot(productEntry.getValue(), companyName);
+            GeizhalsProduct comatListing = scraperService.findProductListingByCompanyName(productEntry.getValue(), COMPANY);
+            GeizhalsProduct afterComatListing = scraperService.findFirstProductWhereCompanyIsNot(productEntry.getValue(), COMPANY);
             printToConsole(productEntry, comatListing, afterComatListing);
         }
     }
