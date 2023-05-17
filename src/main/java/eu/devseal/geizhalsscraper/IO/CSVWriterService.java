@@ -16,8 +16,8 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import static eu.devseal.geizhalsscraper.data.Configuration.COMPANY;
-import static eu.devseal.geizhalsscraper.data.Configuration.NO_LISTING_ID;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.COMPANY;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
 
 @Service
 @RequiredArgsConstructor
