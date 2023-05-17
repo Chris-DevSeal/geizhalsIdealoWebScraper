@@ -28,8 +28,11 @@ public class ScraperRunner {
 
     @Bean
     @Order(1)
-    ApplicationRunner writeToCSV(CSVWriterService writerService, FileWriter fileWriter) {
-        return args -> writerService.writeScrapedDataToCsv(fileWriter);
+    ApplicationRunner writeToCSV(GeizhalsScraperService scraperService, CSVWriterService writerService, FileWriter fileWriter) {
+        return args -> {
+            Map<Product, List<GeizhalsProduct>> data = scraperService.scrape();
+            writerService.writeScrapedDataToCsv(data, fileWriter);
+        };
     }
     @Bean
     FileWriter getFileWriter() throws IOException {

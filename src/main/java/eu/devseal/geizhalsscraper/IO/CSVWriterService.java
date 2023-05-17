@@ -27,8 +27,7 @@ public class CSVWriterService {
     private final ProductFormatter productFormatter;
     private final GeizhalsProductService productService;
 
-    public void writeScrapedDataToCsv(Writer writer) throws IOException {
-        Map<Product, List<GeizhalsProduct>> data = scrapeService.scrape();
+    public void writeScrapedDataToCsv(Map<Product, List<GeizhalsProduct>> data, Writer writer) {
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis"};
             csvPrinter.printRecord(headlines);
