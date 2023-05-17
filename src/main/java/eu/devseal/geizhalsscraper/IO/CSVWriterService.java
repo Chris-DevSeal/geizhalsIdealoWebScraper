@@ -29,7 +29,7 @@ public class CSVWriterService {
 
     public void writeScrapedDataToCsv(Map<Product, List<GeizhalsProduct>> data, Writer writer) {
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis"};
+            Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis","Empfohlener Preis"};
             csvPrinter.printRecord(headlines);
             for (Map.Entry<Product, List<GeizhalsProduct>> productListEntry : data.entrySet()) {
                 writeLine(csvPrinter, productListEntry);
@@ -46,13 +46,15 @@ public class CSVWriterService {
         GeizhalsProduct comatProduct = scrapeService.findProductListingByCompanyName(productListings, COMPANY);
         double diffComatAndCompetitor = isOneProductNonExistent(product, comatProduct) ? getDiffComatAndCompetitor(product, comatProduct) : 999_999_999;
         double totalPrice = productService.getTotalPrice(product);
+        double recommendedPrice = productService.findOptimalPrice(comatProduct, product);
         csvPrinter.printRecord
                 (
                         name,
                         product.getUnitPrice(),
                         productService.getSmallestShippingCost(product.getShippingCost()),
                         productService.formatDoubleToString(totalPrice), product.getCompany(),
-                        productService.formatDoubleToString(diffComatAndCompetitor)
+                        productService.formatDoubleToString(diffComatAndCompetitor),
+                        productService.formatDoubleToString(recommendedPrice)
                 );
     }
 
