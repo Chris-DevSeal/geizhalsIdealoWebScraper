@@ -25,4 +25,29 @@ public class GeizhalsProductService {
                 .min(Comparator.naturalOrder())
                 .orElse(shippingCost.get(0));
     }
+
+    public double findOptimalPrice(GeizhalsProduct changingProduct, GeizhalsProduct comparingProduct) {
+        double optimalPrice = getTotalPrice(changingProduct);
+        double comparingPrice = getTotalPrice(comparingProduct);
+        optimalPrice = comparingPrice < optimalPrice ? decreasePriceUntil(optimalPrice, comparingPrice) : increasePriceUntil(optimalPrice, comparingPrice);
+        return optimalPrice - getSmallestShippingCost(changingProduct.getShippingCost());
+
+    }
+
+    private double increasePriceUntil(double optimalPrice, double comparingPrice) {
+        while (optimalPrice < comparingPrice) {
+            if (optimalPrice + 10 >= comparingPrice) {
+                break;
+            }
+            optimalPrice += 10;
+        }
+        return optimalPrice;
+    }
+
+    private double decreasePriceUntil(double optimalPrice, double comparingPrice) {
+        while (optimalPrice >= comparingPrice) {
+            optimalPrice -= 10;
+        }
+        return optimalPrice;
+    }
 }
