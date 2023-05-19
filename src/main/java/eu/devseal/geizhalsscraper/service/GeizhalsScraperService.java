@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static eu.devseal.geizhalsscraper.data.CssQuery.*;
 import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
 import static java.util.Comparator.comparing;
 
@@ -41,7 +42,7 @@ public class GeizhalsScraperService {
 
     private List<GeizhalsProduct> getProducts(Document doc) {
         List<GeizhalsProduct> scrapedData = new ArrayList<>();
-        Elements productListings = doc.select("div.row.offer");
+        Elements productListings = doc.select(PRODUCT_LISTINGS.val);
         getProductDetails(scrapedData, productListings);
         return scrapedData;
     }
@@ -64,11 +65,11 @@ public class GeizhalsScraperService {
     }
 
     private List<Double> getShippingCost(Element product) {
-        return Arrays.stream(product.select("div.offer__delivery div.offer__delivery-payment span.gh_extracost").text().replace("€ ", "").replace(",", ".").replace("-", "").split(" ")).distinct().map(price -> price.trim().length() > 0 ? Double.parseDouble(price) : (double) 0).toList();
+        return Arrays.stream(product.select(SHIPPING_COST.val).text().replace("€ ", "").replace(",", ".").replace("-", "").split(" ")).distinct().map(price -> price.trim().length() > 0 ? Double.parseDouble(price) : (double) 0).toList();
     }
 
     private String getCompany(Element product) {
-        return Objects.requireNonNull(product.selectFirst("div.offer__merchant a")).attr("data-merchant-name");
+        return Objects.requireNonNull(product.selectFirst(COMPANY.val)).attr(COMPANY_ATTRIBUTE.val);
     }
 
     private int getId(String productID) {
@@ -78,7 +79,7 @@ public class GeizhalsScraperService {
     private double getUnitPrice(Element product) {
         String unitPriceString = Objects.requireNonNull(
                         product
-                                .selectFirst("div.offer__price span"))
+                                .selectFirst(UNIT_PRICE.val))
                 .text()
                 .replace(",", ".");
         return Double.parseDouble(unitPriceString.substring(2));
