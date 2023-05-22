@@ -28,7 +28,7 @@ public class CSVWriterService {
 
     public void writeScrapedDataToCsv(Map<Product, List<GeizhalsProduct>> data, Writer writer) {
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis", "Empfohlener Preis"};
+            Object[] headlines = new String[]{"Anbieter", "Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Differenz Comat Preis", "Empfohlener Preis"};
             csvPrinter.printRecord(headlines);
             for (Map.Entry<Product, List<GeizhalsProduct>> productListEntry : data.entrySet()) {
                 writeLine(csvPrinter, productListEntry);
@@ -54,10 +54,11 @@ public class CSVWriterService {
         }
         csvPrinter.printRecord
                 (
+                        product.getCompany(),
                         name,
                         product.getUnitPrice(),
                         productService.getSmallestShippingCost(product.getShippingCost()),
-                        productService.formatDoubleToString(totalPrice), product.getCompany(),
+                        productService.formatDoubleToString(totalPrice),
                         productService.formatDoubleToString(diffComatAndCompetitor),
                         productService.formatDoubleToString(recommendedPrice)
                 );
