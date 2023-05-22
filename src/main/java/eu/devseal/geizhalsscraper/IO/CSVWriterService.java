@@ -16,8 +16,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import static eu.devseal.geizhalsscraper.data.StaticConstants.COMPANY;
-import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
+import static eu.devseal.geizhalsscraper.data.StaticConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class CSVWriterService {
 
     public void writeScrapedDataToCsv(Map<Product, List<GeizhalsProduct>> data, Writer writer) {
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis","Empfohlener Preis"};
+            Object[] headlines = new String[]{"Maschinentyp", "Maschinenpreis", "Lieferkosten", "Gesamt", "Anbieter", "Differenz Comat Preis", "Empfohlener Preis"};
             csvPrinter.printRecord(headlines);
             for (Map.Entry<Product, List<GeizhalsProduct>> productListEntry : data.entrySet()) {
                 writeLine(csvPrinter, productListEntry);
@@ -44,9 +43,15 @@ public class CSVWriterService {
         List<GeizhalsProduct> productListings = productListEntry.getValue();
         GeizhalsProduct product = scrapeService.findFirstProductWhereCompanyIsNot(productListings, COMPANY);
         GeizhalsProduct comatProduct = scrapeService.findProductListingByCompanyName(productListings, COMPANY);
-        double diffComatAndCompetitor = areBothProductsExistent(product, comatProduct) ? getDiffComatAndCompetitor(product, comatProduct) : 999_999_999;
+        double diffComatAndCompetitor = areBothProductsExistent(product, comatProduct) ? getDiffComatAndCompetitor(product, comatProduct) : NO_LISTING_VALUE;
         double totalPrice = productService.getTotalPrice(product);
         double recommendedPrice = productService.findOptimalPrice(comatProduct, product);
+        if (diffComatAndCompetitor == NO_LISTING_VALUE) {
+            csvPrinter.printRecord(
+                    String.format("%s - nicht gelistet", name)
+            );
+            return;
+        }
         csvPrinter.printRecord
                 (
                         name,
