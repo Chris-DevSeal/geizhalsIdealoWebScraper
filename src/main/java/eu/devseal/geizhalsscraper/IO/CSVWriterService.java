@@ -44,7 +44,7 @@ public class CSVWriterService {
         List<GeizhalsProduct> productListings = productListEntry.getValue();
         GeizhalsProduct product = scrapeService.findFirstProductWhereCompanyIsNot(productListings, COMPANY);
         GeizhalsProduct comatProduct = scrapeService.findProductListingByCompanyName(productListings, COMPANY);
-        double diffComatAndCompetitor = isOneProductNonExistent(product, comatProduct) ? getDiffComatAndCompetitor(product, comatProduct) : 999_999_999;
+        double diffComatAndCompetitor = areBothProductsExistent(product, comatProduct) ? getDiffComatAndCompetitor(product, comatProduct) : 999_999_999;
         double totalPrice = productService.getTotalPrice(product);
         double recommendedPrice = productService.findOptimalPrice(comatProduct, product);
         csvPrinter.printRecord
@@ -58,7 +58,7 @@ public class CSVWriterService {
                 );
     }
 
-    private boolean isOneProductNonExistent(GeizhalsProduct product, GeizhalsProduct comatProduct) {
+    private boolean areBothProductsExistent(GeizhalsProduct product, GeizhalsProduct comatProduct) {
         return comatProduct.getOfferID() != NO_LISTING_ID && product.getOfferID() != NO_LISTING_ID;
     }
 
