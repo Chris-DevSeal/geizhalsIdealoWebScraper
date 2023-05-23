@@ -1,4 +1,4 @@
-package eu.devseal.geizhalsscraper.runner;
+package eu.devseal.geizhalsscraper.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.File;
 
 @Configuration
-public class ScraperRunner {
+public class AppConfigruation {
 
     @Bean
     File file() {
