@@ -3,10 +3,7 @@ package eu.devseal.geizhalsscraper.controller;
 import eu.devseal.geizhalsscraper.service.GeizhalsWebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,11 +20,13 @@ public class GeizhalsController {
 
     @GetMapping(produces = "text/csv")
     @CrossOrigin
-    byte[] evaluateScrapedData() throws IOException {
-        try (FileWriter fileWriter = new FileWriter(file)) {
-            geizhalsWebService.refreshScrapeResults(fileWriter);
-        } catch (IOException e) {
-            log.error("Controller Error: "+e);
+    byte[] evaluateScrapedData(@RequestParam(defaultValue = "false") boolean reload) throws IOException {
+        if (reload || !file.exists()) {
+            try (FileWriter fileWriter = new FileWriter(file)) {
+                geizhalsWebService.refreshScrapeResults(fileWriter);
+            } catch (IOException e) {
+                log.error("Controller Error: "+e);
+            }
         }
         return Files.readAllBytes(file.toPath());
     }
