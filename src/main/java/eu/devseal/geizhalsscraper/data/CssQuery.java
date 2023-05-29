@@ -6,9 +6,9 @@ public enum CssQuery {
     COMPANY("div.offer__merchant a"),
     COMPANY_ATTRIBUTE("data-merchant-name"),
     UNIT_PRICE("div.offer__price span");
-    public final String val;
+    public final String geizhals;
 
-    CssQuery(String val) {
-        this.val = val;
+    CssQuery(String geizhals) {
+        this.geizhals = geizhals;
     }
     }
