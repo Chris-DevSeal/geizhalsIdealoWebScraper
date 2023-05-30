@@ -1,7 +1,7 @@
 package eu.devseal.geizhalsscraper.service;
 
-import eu.devseal.geizhalsscraper.data.ProductListing;
 import eu.devseal.geizhalsscraper.data.Product;
+import eu.devseal.geizhalsscraper.data.ProductListing;
 import eu.devseal.geizhalsscraper.data.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -12,16 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static eu.devseal.geizhalsscraper.data.GeizhalsCssQuery.*;
-import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
-import static java.util.Comparator.comparing;
 
 @Service
 @RequiredArgsConstructor
 public class GeizhalsScraperService {
-    private final ProductService productService;
     private final ProductRepository productRepository;
 
     public Map<Product, List<ProductListing>> scrape() throws IOException {
