@@ -1,15 +1,15 @@
 package eu.devseal.geizhalsscraper.service;
 
-import eu.devseal.geizhalsscraper.data.GeizhalsProduct;
+import eu.devseal.geizhalsscraper.data.ProductListing;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class GeizhalsProductService {
+public class ProductService {
 
-    public double getTotalPrice(GeizhalsProduct product) {
+    public double getTotalPrice(ProductListing product) {
         return product.getUnitPrice() + getSmallestShippingCost(product.getShippingCost());
     }
 
@@ -26,7 +26,7 @@ public class GeizhalsProductService {
                 .orElse(shippingCost.get(0));
     }
 
-    public double findOptimalPrice(GeizhalsProduct changingProduct, GeizhalsProduct comparingProduct) {
+    public double findOptimalPrice(ProductListing changingProduct, ProductListing comparingProduct) {
         double optimalPrice = getTotalPrice(changingProduct);
         double comparingPrice = getTotalPrice(comparingProduct);
         optimalPrice = comparingPrice < optimalPrice ? decreasePriceUntil(optimalPrice, comparingPrice) : increasePriceUntil(optimalPrice, comparingPrice);
