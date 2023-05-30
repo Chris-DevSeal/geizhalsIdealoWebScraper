@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class GeizhalsProduct {
+public class ProductListing {
     private int offerID;
     private double unitPrice;
     private List<Double> shippingCost;
