@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import java.io.File;
 
 @Configuration
-public class AppConfigruation {
+public class AppConfiguration {
 
     @Bean
     File file() {
-        return new File("src/main/resources/output/scrapedData.csv");
+        return new File("output/scrapedData.csv");
     }
 
 }
