@@ -1,16 +1,19 @@
 package eu.devseal.geizhalsscraper.service;
 
 import eu.devseal.geizhalsscraper.data.ProductListing;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static eu.devseal.geizhalsscraper.data.StaticConstants.NO_LISTING_ID;
 import static java.util.Comparator.comparing;
 
 @Service
 public class ProductService {
+
+    @Value("${spring.datasource.NO_LISTING_ID}")
+    private int NO_LISTING_ID;
 
     public double getTotalPrice(ProductListing product) {
         return product.getUnitPrice() + getSmallestShippingCost(product.getShippingCost());
@@ -44,12 +47,14 @@ public class ProductService {
                 .min(comparing(this::getTotalPrice))
                 .orElse(listingNotFound());
     }
+
     public ProductListing findProductListingByCompanyName(List<ProductListing> products, List<String> companyNames) {
         return products.stream()
                 .filter(product -> companyNames.contains(product.getCompany()))
                 .findFirst()
                 .orElse(listingNotFound());
     }
+
     private ProductListing listingNotFound() {
         return ProductListing.builder().offerID(NO_LISTING_ID).build();
     }
