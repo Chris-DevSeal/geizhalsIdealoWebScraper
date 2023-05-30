@@ -19,7 +19,7 @@ public class GeizhalsController {
     @GetMapping(produces = "text/csv")
     @CrossOrigin
     byte[] evaluateScrapedData(@RequestParam(defaultValue = "false") boolean reload) throws CustomFileNotFoundException {
-        return geizhalsWebService.sendScrapedData(reload, file);
+        return geizhalsWebService.getCsvData(reload, file);
     }
 
 }
