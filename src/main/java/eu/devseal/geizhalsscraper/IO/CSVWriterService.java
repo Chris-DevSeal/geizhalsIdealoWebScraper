@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,13 +15,19 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 
-import static eu.devseal.geizhalsscraper.data.StaticConstants.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CSVWriterService {
     private final ProductService productService;
+
+    @Value("${spring.datasource.NO_LISTING_ID}")
+    private int NO_LISTING_ID;
+    @Value("${spring.datasource.COMPANIES}")
+    private List<String> COMPANIES;
+    @Value("${spring.datasource.NO_LISTING_VALUE}")
+    private int NO_LISTING_VALUE;
 
     public void writeScrapedDataToCsv(Map<Product, List<ProductListing>> data, Writer writer) {
         try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
