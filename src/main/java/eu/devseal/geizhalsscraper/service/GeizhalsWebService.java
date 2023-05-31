@@ -22,6 +22,7 @@ public class GeizhalsWebService {
     private final GeizhalsScraperService geizhalsScraperService;
     private final IdealoScraperService idealoScraperService;
     private final CSVWriterService writerService;
+    private final File file;
 
     public void refreshScrapeResults(FileWriter fileWriter) {
         try {
@@ -36,7 +37,7 @@ public class GeizhalsWebService {
         }
     }
 
-    public byte[] getCsvData(boolean reload, File file) throws CustomFileNotFoundException {
+    public byte[] getCsvData(boolean reload) throws CustomFileNotFoundException {
         if (reload || !file.exists()) {
             try (FileWriter fileWriter = new FileWriter(file)) {
                 refreshScrapeResults(fileWriter);

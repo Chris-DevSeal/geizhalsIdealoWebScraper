@@ -14,12 +14,11 @@ import java.io.File;
 @Slf4j
 public class GeizhalsController {
     private final GeizhalsWebService geizhalsWebService;
-    private final File file;
 
     @GetMapping(produces = "text/csv")
     @CrossOrigin
     byte[] evaluateScrapedData(@RequestParam(defaultValue = "false") boolean reload) throws CustomFileNotFoundException {
-        return geizhalsWebService.getCsvData(reload, file);
+        return geizhalsWebService.getCsvData(reload);
     }
 
 }
