@@ -1,6 +1,6 @@
 spring:
   datasource:
-    FILEPATH: ./output/scrapedData.csv
+    FILEPATH: ${FILEPATH:src/main/resources/output/scrapedData.csv}
     NO_LISTING_ID: 999
     NO_LISTING_VALUE: 999999999
     COMPANIES:
