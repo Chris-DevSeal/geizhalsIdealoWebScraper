@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ import static eu.devseal.geizhalsscraper.data.IdealoCssQuery.*;
 @RequiredArgsConstructor
 public class IdealoScraperService {
     private final ProductRepository repository;
+    @Value("${spring.datasource.NO_LISTING_ID}")
+    private int NO_LISTING_ID;
 
     public Map<Product, List<ProductListing>> scrape() throws IOException {
         Map<Product, List<ProductListing>> scrapedProducts = new LinkedHashMap<>();
@@ -77,7 +80,13 @@ public class IdealoScraperService {
 
     private int getId(Element product) {
         JSONObject jsonObject = (JSONObject) getGtmPayload(product);
+        if (notListedProduct(jsonObject)) {
+            return NO_LISTING_ID;
+        }
         return Integer.parseInt(jsonObject.get("position").toString());
+    }
+    private boolean notListedProduct(JSONObject object) {
+        return object.get("delivery_time").equals("out");
     }
 
     private Object getGtmPayload(Element product) {
