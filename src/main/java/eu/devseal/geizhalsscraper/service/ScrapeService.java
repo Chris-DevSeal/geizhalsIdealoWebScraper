@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GeizhalsWebService {
+public class ScrapeService {
     private final GeizhalsScraperService geizhalsScraperService;
     private final IdealoScraperService idealoScraperService;
     private final CSVWriterService writerService;
@@ -42,7 +42,7 @@ public class GeizhalsWebService {
             try (FileWriter fileWriter = new FileWriter(file)) {
                 refreshScrapeResults(fileWriter);
             } catch (IOException e) {
-                log.error("Controller Error: "+e);
+                log.error("Controller Error: " + e);
             }
         }
         try {
