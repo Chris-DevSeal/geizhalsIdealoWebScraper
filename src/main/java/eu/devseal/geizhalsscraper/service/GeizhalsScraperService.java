@@ -17,9 +17,10 @@ import static eu.devseal.geizhalsscraper.data.GeizhalsCssQuery.*;
 
 @Service
 @RequiredArgsConstructor
-public class GeizhalsScraperService {
+public class GeizhalsScraperService implements ScraperService {
     private final ProductRepository productRepository;
 
+    @Override
     public Map<Product, List<ProductListing>> scrape() throws IOException {
         Map<Product, List<ProductListing>> scrapedProducts = new LinkedHashMap<>();
 

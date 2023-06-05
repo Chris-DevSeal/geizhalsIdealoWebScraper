@@ -23,11 +23,12 @@ import static eu.devseal.geizhalsscraper.data.IdealoCssQuery.*;
 
 @Service
 @RequiredArgsConstructor
-public class IdealoScraperService {
+public class IdealoScraperService implements ScraperService {
     private final ProductRepository repository;
     @Value("${spring.datasource.NO_LISTING_ID}")
     private int NO_LISTING_ID;
 
+    @Override
     public Map<Product, List<ProductListing>> scrape() throws IOException {
         Map<Product, List<ProductListing>> scrapedProducts = new LinkedHashMap<>();
         for (Product product : repository.findAll()) {
@@ -85,6 +86,7 @@ public class IdealoScraperService {
         }
         return Integer.parseInt(jsonObject.get("position").toString());
     }
+
     private boolean notListedProduct(JSONObject object) {
         return object.get("delivery_time").equals("out");
     }
